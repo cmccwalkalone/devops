@@ -1,14 +1,32 @@
 git init
 
+git status
 
-
-git add .*
+git add .
 
 git commit -m "xxxx"
 
 
-git remote add git origin https://github.com/cmccwalkalone/devops.git
+---删除远程仓库
+git remote rm origin
+
+---添加远程仓库
+git remote add origin https://github.com/cmccwalkalone/devops.git
+
+---生成SSH KEY，复制id_rsa.pub中的内容到github
+
+ssh-keygen -t rsa  -C "cmccwalkalone@gmail.com"
+
+---推送代码到github
+
 git push -u origin master
+
+---从github拉取代码
+ git pull origin master
+
+----查看remote仓库链接
+git remote
+git remote -v
 
 
 git branch
