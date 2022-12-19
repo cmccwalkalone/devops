@@ -71,3 +71,20 @@ wget -O /etc/yum.repos.d/epel.repo https://mirrors.aliyun.com/repo/epel-7.repo
 
 
 yum install -y gcc gcc-c++ autoconf automake make
+
+
+
+-----LNMP------
+1.初创型公司，用LNMP架构，最少3台服务器足矣，Nginx可以和后台程序部署在同一台机器上，MySQL数据库单独一台，mencached缓存数据库单独一台
+
+优势：
+1.单体架构，简单，清晰
+2.快速研发，满足产品快速迭代的需求
+3.运维成本低，不需要运维
+
+
+LNMP工作流
+1.用户通过浏览器输入域名访问nginx web服务器
+2.nginx进行用户请求判断（location url匹配）,静态请求则直接响应给客户,动态请求，比如.php结尾,那么nginx就会通过fastcgi接口把请求转发给PHP后台（php-fpm 进程）,php进行动态解析,如果发现还需要读取数据库，就通过PHP连接数据库，读取完毕后返回给nginx,nginx把数据响应给用户.
+
+

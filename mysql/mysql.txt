@@ -1,0 +1,21 @@
+客户文件夹       -----数据库
+	用户电话	 -----数据表
+	用户地址
+
+安装mysql
+安装方式的选择
+yum
+rpm包
+源代码安装
+二进制安装:把安装好的mysql打包成压缩文件，用户解压缩后直接简单配置就可以使用，速度快，适合专业的DBA使用
+
+
+user add -s /sbin/nologin  mysql
+
+id mysql #查看mysql 用户名的信息
+
+下载mysql 二进制代码包
+yum install  
+
+wget
+
