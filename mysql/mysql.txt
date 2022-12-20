@@ -10,19 +10,19 @@ rpm包
 二进制安装:把安装好的mysql打包成压缩文件，用户解压缩后直接简单配置就可以使用，速度快，适合专业的DBA使用
 
 
-user add -s /sbin/nologin  mysql
+useradd -s /sbin/nologin  mysql
 
 id mysql #查看mysql 用户名的信息
 
 下载mysql 二进制代码包
-yum install  
+yum install  wget
 
-wget
 
+wget https://downloads.mysql.com/archives/get/p/23/file/mysql-5.7.26-el7-x86_64.tar.gz
 
 解压缩
 
-tar -zxvf
+tar -zxvf mysql-5.7.26-el7-x86_64.tar.gz
 
 cd mysql  #进入mysql文件夹
 
@@ -72,7 +72,7 @@ chown R mysql.mysql /mytools/mysql/
 
 初始化mysql数据库
 
-/mytools/mysql/bin/mysqld --initiallize-insercure --user=mysql --basedir=/mytools/mysqld/ --datadir=/mytools/mysql/data
+/mytools/mysql/bin/mysqld --initialize-insecure --user=mysql --basedir=/mytools/mysql/ --datadir=/mytools/mysql/data/
 
 
 配置mysql客户端
@@ -92,11 +92,11 @@ Documentation=http://dev.mysql.com/doc/refman/en/using-sysdemd.html
 After=network.target
 After=syslog.target
 
-[install]
+[Install]
 WantedBy=muti-user.target
 
 #上面的代码都是默认，这里的代码才是配置
-[service]
+[Service]
 User=mysql
 Group=mysql
 ExecStart=/mytools/mysql/bin/mysqld --default-file=/etc/my.cnf
@@ -113,7 +113,7 @@ systemctl status mysqld
 
 检查进程
 
-pf -ef | grep mysqld
+ps -ef | grep mysqld
 
 
 检查端口
@@ -158,5 +158,5 @@ use walkalone
 show tables
 
 #修改命令
-mysqladmin -u root password 'dongge666'
+mysqladmin -u root password 'zxd575636'
 
