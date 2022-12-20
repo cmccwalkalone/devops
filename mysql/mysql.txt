@@ -19,3 +19,144 @@ yum install
 
 wget
 
+
+解压缩
+
+tar -zxvf
+
+cd mysql  #进入mysql文件夹
+
+cd bin
+
+配置软连接
+
+cd /mytools
+
+ln -s /mytools/mysql-5.8.28/   /mytools/mysql
+
+安全性准备工作，卸载centos7存在的mariabd相关的依赖关系
+
+rpm -e --nodeps mariadb-libs
+
+
+准备开始启动mysql的配置文件
+
+vim /etc/my.cnf   #创建一个新的my.cnf配置文件
+#[]是区，段的含义，以下的参数，对其生效
+#[myslqd] 说明是对服务端生效的参数
+#[mysql]说明是对客户端生效的参数
+
+#记得这里要空一行
+
+[mysqld]
+basedir=/mytools/mysql/
+datadir=/mytools/mysql/data
+socket=/tmp/mysql.sock
+server_id=1
+port=3306
+log_error=/mytools/mysql/data/mysql_err.log
+
+[mysql]
+socket=/tmp/mysql.sock
+
+
+检查mysql所需要的依赖
+yum install libaio-devel -y
+
+创建mysql数据文件夹，用于初始化数据，且进行权限控制
+
+mkdir -p /mytools/mysql/data
+
+#修改 mysql所有的内容，属主，属组
+chown R mysql.mysql /mytools/mysql/
+
+初始化mysql数据库
+
+/mytools/mysql/bin/mysqld --initiallize-insercure --user=mysql --basedir=/mytools/mysqld/ --datadir=/mytools/mysql/data
+
+
+配置mysql客户端
+
+使用systemctl命令管理mysql数据库
+
+1.编写mysql启动的脚本,定义 一个mysqld.servive
+/etc/systemd/system  #service文件放在这个文件夹里面
+
+touch /etc/systemd/system/mysqld.service
+
+
+[Unit]
+Description=MYSQL server by walkalone
+Documentation=man:mysqld(8)
+Documentation=http://dev.mysql.com/doc/refman/en/using-sysdemd.html
+After=network.target
+After=syslog.target
+
+[install]
+WantedBy=muti-user.target
+
+#上面的代码都是默认，这里的代码才是配置
+[service]
+User=mysql
+Group=mysql
+ExecStart=/mytools/mysql/bin/mysqld --default-file=/etc/my.cnf
+LimitNOFILE=5000
+
+
+启动mysqld服务端
+
+systemctl start mysqld.service
+
+检查状态，active状态，mysql就正常启动了
+systemctl status mysqld
+
+
+检查进程
+
+pf -ef | grep mysqld
+
+
+检查端口
+
+netstat -tunlp |grep 3306
+
+
+登陆mysql数据库
+
+which mysql
+
+#如果已安装过mysql，卸载,不会影响到二进制mysql数据库
+yum remove mysql -y
+
+退出会话，重新登陆
+
+配置我们安装的二进制mysql 到PATH环境变量
+
+echo $PATH
+
+PATH="$PATH:/mytools/mysql/bin"
+
+#这句写入末尾
+vim /ect/profile
+
+重新登陆会话
+
+exit
+
+ssh root@192.168.178.122
+
+登陆mysql客户端
+
+mysql -uroot -p
+
+show databases
+
+create database walkalone
+
+use walkalone
+
+show tables
+
+#修改命令
+mysqladmin -u root password 'dongge666'
+
